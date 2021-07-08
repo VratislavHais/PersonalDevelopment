@@ -1,41 +1,33 @@
 package com.vhais.dfs;
 
+import java.util.ArrayList;
 import java.util.Deque;
 import java.util.LinkedList;
+import java.util.List;
 
-public class BreadthFirstSearch {
-	private Graph graph;
-	private boolean solved;
-	private boolean[] visited;
-	private long result;
+public class BreadthFirstSearch<T extends Comparable<T>> {
+	private final Graph<T> graph;
+	private List<T> visited;
 
-	public BreadthFirstSearch(Graph graph) {
+	public BreadthFirstSearch(Graph<T> graph) {
 		this.graph = graph;
-		solved = false;
 	}
 
-	public long bfs() {
-		return bfs(0);
-	}
-
-	public long bfs(int start) {
+	public long bfs(T start) {
 		if (graph.isEmpty()) throw new IllegalStateException("Graph is empty.");
-		if (solved) return result;
-		visited = new boolean[graph.getNumberOfNodes()];
-		result = breadthFirstSearch(start);
-		solved = true;
-		return result;
+		visited = new ArrayList<>();
+		return breadthFirstSearch(start);
 	}
 
-	private long breadthFirstSearch(int start) {
-		Deque<Integer> queue = new LinkedList<>();
+	private long breadthFirstSearch(T start) {
+		Deque<T> queue = new LinkedList<>();
 		queue.push(start);
-		visited[start] = true;
+		visited.add(start);
 		long count = 1L;
 		while (!queue.isEmpty()) {
-			for (Graph.Edge edge : graph.getEdgesFromNode(queue.pop())) {
-				if (!visited[edge.to]) {
-					visited[edge.to] = true;
+			for (Graph.Edge<T> edge : graph.getEdgesFromNode(queue.pop())) {
+				if (!visited.contains(edge.to)) {
+					visited.add(edge.to);
 					count++;
 					queue.push(edge.to);
 				}

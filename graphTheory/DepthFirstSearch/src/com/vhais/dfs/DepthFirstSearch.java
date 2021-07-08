@@ -1,38 +1,29 @@
 package com.vhais.dfs;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class DepthFirstSearch {
-	private final Graph graph;
-	private boolean solved;
-	private boolean[] visited;
-	private long result;
+public class DepthFirstSearch<T extends Comparable<T>> {
+	private final Graph<T> graph;
+	private List<T> visited;
 
-	public DepthFirstSearch(Graph graph) {
+	public DepthFirstSearch(Graph<T> graph) {
 		this.graph = graph;
-		solved = false;
 	}
 
-	public long dfs() {
-		return dfs(0);
-	}
-
-	public long dfs(int start) {
+	public long dfs(T start) {
 		if (graph.isEmpty()) throw new IllegalStateException("Graph is empty.");
-		if (solved) return result;
-		visited = new boolean[graph.getNumberOfNodes()];
-		result = depthFirstSearch(start);
-		solved = true;
-		return result;
+		visited = new ArrayList<>();
+		return depthFirstSearch(start);
 	}
 
-	private long depthFirstSearch(int current) {
-		if (visited[current]) return 0L;
-		visited[current] = true;
+	private long depthFirstSearch(T current) {
+		if (visited.contains(current)) return 0L;
+		visited.add(current);
 		long count = 1L;
-		List<Graph.Edge> edges = graph.getEdgesFromNode(current);
+		List<Graph.Edge<T>> edges = graph.getEdgesFromNode(current);
 		if (edges != null) {
-			for (Graph.Edge edge : edges) {
+			for (Graph.Edge<T> edge : edges) {
 				count += depthFirstSearch(edge.to);
 			}
 		}
