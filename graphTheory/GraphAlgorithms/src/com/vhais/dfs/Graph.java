@@ -103,7 +103,7 @@ public class Graph<T extends Comparable<T>> {
 		}
 	}
 
-	static class Edge<T extends Comparable<T>> {
+	static class Edge<T extends Comparable<T>> implements Comparable {
 		final T from, to;
 		final int cost;
 
@@ -111,6 +111,12 @@ public class Graph<T extends Comparable<T>> {
 			this.from = from;
 			this.to = to;
 			this.cost = cost;
+		}
+
+		@Override
+		public int compareTo(Object o) {
+			Edge<T> edge2 = (Edge<T>) o;
+			return this.cost - ((Edge<T>) o).cost;
 		}
 	}
 }
