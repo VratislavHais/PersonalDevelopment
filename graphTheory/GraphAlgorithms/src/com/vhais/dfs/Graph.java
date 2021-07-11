@@ -73,6 +73,36 @@ public class Graph<T extends Comparable<T>> {
 		return numberOfNodes;
 	}
 
+	// bellman-ford
+	public boolean containsNegativeCycle() {
+		Map<T, Double> nodes = new HashMap<>();
+		nodeList().stream().findFirst().ifPresent(node -> nodes.put(node, 0.0));
+		nodeList().stream().skip(1).forEach(node -> nodes.put(node, Double.POSITIVE_INFINITY));
+		for (int i = 0; i < nodes.size(); i++) {
+			for (Edge<T> edge : getAllEdges()) {
+				if (nodes.get(edge.from) + edge.cost < nodes.get(edge.to)) {
+					nodes.replace(edge.to, nodes.get(edge.from) + edge.cost);
+				}
+			}
+		}
+		for (int i = 0; i < nodes.size(); i++) {
+			for (Edge<T> edge : getAllEdges()) {
+				if (nodes.get(edge.from) + edge.cost < nodes.get(edge.to)) {
+					nodes.replace(edge.to, Double.NEGATIVE_INFINITY);
+				}
+			}
+		}
+		return nodes.containsValue(Double.NEGATIVE_INFINITY);
+	}
+
+	public List<Edge<T>> getAllEdges() {
+		List<Edge<T>> edges = new ArrayList<>();
+		for (List<Edge<T>> edgeList : graph.values()) {
+			edges.addAll(edgeList);
+		}
+		return edges;
+	}
+
 	public static class GraphBuilder<T extends Comparable<T>> {
 		private Map<T, List<Graph.Edge<T>>> graph = new HashMap<>();
 		private boolean directed = false;
@@ -103,7 +133,7 @@ public class Graph<T extends Comparable<T>> {
 		}
 	}
 
-	static class Edge<T extends Comparable<T>> implements Comparable {
+	static class Edge<T extends Comparable<T>> {
 		final T from, to;
 		final int cost;
 
@@ -112,11 +142,20 @@ public class Graph<T extends Comparable<T>> {
 			this.to = to;
 			this.cost = cost;
 		}
+	}
 
-		@Override
-		public int compareTo(Object o) {
-			Edge<T> edge2 = (Edge<T>) o;
-			return this.cost - ((Edge<T>) o).cost;
+	static class Node<T> {
+		T id;
+		double cost;
+
+		public Node(T id, double cost) {
+			this.id = id;
+			this.cost = cost;
+		}
+
+		public double getCost() {
+			return cost;
 		}
 	}
+
 }
