@@ -1,4 +1,4 @@
-package com.vhais.dfs;
+package com.vhais.gt;
 
 import java.util.ArrayList;
 import java.util.Deque;
