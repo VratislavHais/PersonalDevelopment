@@ -103,6 +103,10 @@ public class Graph<T extends Comparable<T>> {
 		return edges;
 	}
 
+	public Set<T> getAllNodes() {
+		return graph.keySet();
+	}
+
 	public static class GraphBuilder<T extends Comparable<T>> {
 		private Map<T, List<Graph.Edge<T>>> graph = new HashMap<>();
 		private boolean directed = false;
@@ -141,6 +145,15 @@ public class Graph<T extends Comparable<T>> {
 			this.from = from;
 			this.to = to;
 			this.cost = cost;
+		}
+
+		@Override
+		public String toString() {
+			return String.format("%s -> %s : %s", from, to, cost);
+		}
+
+		public boolean isReverse(Edge<T> edge) {
+			return this.from == edge.to && this.to == edge.from;
 		}
 	}
 
