@@ -1,5 +1,7 @@
 package com.vhais.gt;
 
+import java.util.List;
+
 public class Main {
 
 	public static void main(String[] args) {
@@ -60,18 +62,38 @@ public class Main {
 //		fw.addEdge(5, 4, -2);
 //		fw.solve();
 //		fw.printPaths();
-		Graph<Integer> graphBridges = new Graph.GraphBuilder<Integer>(9).build();
-		graphBridges.addEdge(0, 1);
-		graphBridges.addEdge(1, 2);
-		graphBridges.addEdge(2, 0);
-		graphBridges.addEdge(2, 3);
-		graphBridges.addEdge(2, 5);
-		graphBridges.addEdge(3, 4);
-		graphBridges.addEdge(5, 6);
-		graphBridges.addEdge(6, 7);
-		graphBridges.addEdge(7, 8);
-		graphBridges.addEdge(8, 5);
-		Bridges<Integer> bridges = new Bridges<>(graphBridges);
-		bridges.solve().forEach(System.out::println);
+//		Graph<Integer> graphBridges = new Graph.GraphBuilder<Integer>(9).build();
+//		graphBridges.addEdge(0, 1);
+//		graphBridges.addEdge(1, 2);
+//		graphBridges.addEdge(2, 0);
+//		graphBridges.addEdge(2, 3);
+//		graphBridges.addEdge(2, 5);
+//		graphBridges.addEdge(3, 4);
+//		graphBridges.addEdge(5, 6);
+//		graphBridges.addEdge(6, 7);
+//		graphBridges.addEdge(7, 8);
+//		graphBridges.addEdge(8, 5);
+//		Bridges<Integer> bridges = new Bridges<>(graphBridges);
+//		bridges.solve().forEach(System.out::println);
+		Graph<Integer> graphTarjan = new Graph.GraphBuilder<Integer>(8).directed().build();
+		graphTarjan.addEdge(0, 1);
+		graphTarjan.addEdge(1, 2);
+		graphTarjan.addEdge(2, 0);
+		graphTarjan.addEdge(3, 7);
+		graphTarjan.addEdge(3, 4);
+		graphTarjan.addEdge(4, 5);
+		graphTarjan.addEdge(5, 0);
+		graphTarjan.addEdge(5, 6);
+		graphTarjan.addEdge(6, 0);
+		graphTarjan.addEdge(6, 2);
+		graphTarjan.addEdge(6, 4);
+		graphTarjan.addEdge(7, 3);
+		graphTarjan.addEdge(7, 5);
+		Tarjan<Integer> tarjan = new Tarjan<>(graphTarjan);
+		var components = tarjan.solve();
+		for (List<Integer> component : components) {
+			component.forEach(i -> System.out.print(i + " "));
+			System.out.println();
+		}
 	}
 }
