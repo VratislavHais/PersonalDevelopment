@@ -75,25 +75,58 @@ public class Main {
 //		graphBridges.addEdge(8, 5);
 //		Bridges<Integer> bridges = new Bridges<>(graphBridges);
 //		bridges.solve().forEach(System.out::println);
-		Graph<Integer> graphTarjan = new Graph.GraphBuilder<Integer>(8).directed().build();
-		graphTarjan.addEdge(0, 1);
-		graphTarjan.addEdge(1, 2);
-		graphTarjan.addEdge(2, 0);
-		graphTarjan.addEdge(3, 7);
-		graphTarjan.addEdge(3, 4);
-		graphTarjan.addEdge(4, 5);
-		graphTarjan.addEdge(5, 0);
-		graphTarjan.addEdge(5, 6);
-		graphTarjan.addEdge(6, 0);
-		graphTarjan.addEdge(6, 2);
-		graphTarjan.addEdge(6, 4);
-		graphTarjan.addEdge(7, 3);
-		graphTarjan.addEdge(7, 5);
-		Tarjan<Integer> tarjan = new Tarjan<>(graphTarjan);
-		var components = tarjan.solve();
-		for (List<Integer> component : components) {
-			component.forEach(i -> System.out.print(i + " "));
-			System.out.println();
-		}
+//		Graph<Integer> graphTarjan = new Graph.GraphBuilder<Integer>(8).directed().build();
+//		graphTarjan.addEdge(0, 1);
+//		graphTarjan.addEdge(1, 2);
+//		graphTarjan.addEdge(2, 0);
+//		graphTarjan.addEdge(3, 7);
+//		graphTarjan.addEdge(3, 4);
+//		graphTarjan.addEdge(4, 5);
+//		graphTarjan.addEdge(5, 0);
+//		graphTarjan.addEdge(5, 6);
+//		graphTarjan.addEdge(6, 0);
+//		graphTarjan.addEdge(6, 2);
+//		graphTarjan.addEdge(6, 4);
+//		graphTarjan.addEdge(7, 3);
+//		graphTarjan.addEdge(7, 5);
+//		Tarjan<Integer> tarjan = new Tarjan<>(graphTarjan);
+//		var components = tarjan.solve();
+//		for (List<Integer> component : components) {
+//			component.forEach(i -> System.out.print(i + " "));
+//			System.out.println();
+//		}
+//		Graph<Integer> graphEulerian = new Graph.GraphBuilder<Integer>(7).directed().build();
+//		graphEulerian.addEmptyNode(0);
+//		graphEulerian.addEdge(1, 2);
+//		graphEulerian.addEdge(1, 3);
+//		graphEulerian.addEdge(2, 2);
+//		graphEulerian.addEdge(2, 4);
+//		graphEulerian.addEdge(2, 4);
+//		graphEulerian.addEdge(3, 1);
+//		graphEulerian.addEdge(3, 2);
+//		graphEulerian.addEdge(3, 5);
+//		graphEulerian.addEdge(4, 3);
+//		graphEulerian.addEdge(4, 6);
+//		graphEulerian.addEdge(5, 6);
+//		graphEulerian.addEdge(6, 3);
+//		EulerianPath<Integer> ep = new EulerianPath<>(graphEulerian);
+//		ep.solve().forEach(i -> System.out.print(i + " "));
+		Graph<Integer> graphPrim = new Graph.GraphBuilder<Integer>(7).weighted().build();
+		graphPrim.addEdge(0, 1, 9);
+		graphPrim.addEdge(0, 2, 0);
+		graphPrim.addEdge(0, 3, 5);
+		graphPrim.addEdge(0, 5, 7);
+		graphPrim.addEdge(1, 3, -2);
+		graphPrim.addEdge(1, 4, 3);
+		graphPrim.addEdge(1, 6, 4);
+		graphPrim.addEdge(1, 6, 4);
+		graphPrim.addEdge(2, 5, 6);
+		graphPrim.addEdge(3, 5, 2);
+		graphPrim.addEdge(3, 6, 3);
+		graphPrim.addEdge(4, 6, 6);
+		graphPrim.addEdge(5, 6, 1);
+		PrimsMinimumSpanningTree<Integer> prim = new PrimsMinimumSpanningTree<>(graphPrim);
+		System.out.println(prim.solve());
+		prim.getUsedEdges().forEach(System.out::println);
 	}
 }

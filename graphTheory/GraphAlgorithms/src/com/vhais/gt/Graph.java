@@ -98,7 +98,7 @@ public class Graph<T extends Comparable<T>> {
 	public List<Edge<T>> getAllEdges() {
 		List<Edge<T>> edges = new ArrayList<>();
 		for (List<Edge<T>> edgeList : graph.values()) {
-			edges.addAll(edgeList);
+			if (edgeList != null) edges.addAll(edgeList);
 		}
 		return edges;
 	}
@@ -145,6 +145,10 @@ public class Graph<T extends Comparable<T>> {
 			this.from = from;
 			this.to = to;
 			this.cost = cost;
+		}
+
+		public int getCost() {
+			return this.cost;
 		}
 
 		@Override
