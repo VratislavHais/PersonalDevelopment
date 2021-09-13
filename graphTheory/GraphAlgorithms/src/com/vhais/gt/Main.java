@@ -5,7 +5,7 @@ import java.util.List;
 public class Main {
 
 	public static void main(String[] args) {
-//		Graph<Integer> graph = new Graph.GraphBuilder<Integer>(5).build();
+//		Graph<Integer> graph = new Graph.Builder<Integer>(5).build();
 //		graph.addEdge(0, 1);
 //		graph.addEdge(0, 2);
 //		graph.addEdge(1, 2);
@@ -16,7 +16,7 @@ public class Main {
 //		System.out.println(dfs.dfs(3));
 //		BreadthFirstSearch<Integer> bfs = new BreadthFirstSearch<>(graph);
 //		System.out.println(bfs.bfs(2));
-//		Graph<String> graphString = new Graph.GraphBuilder<String>(5).build();
+//		Graph<String> graphString = new Graph.Builder<String>(5).build();
 //		graphString.addEdge("A", "B");
 //		graphString.addEdge("A", "C");
 //		graphString.addEdge("B", "C");
@@ -25,7 +25,7 @@ public class Main {
 //		graphString.addEdge("C", "C");
 //		DepthFirstSearch<String> dfsString = new DepthFirstSearch<>(graphString);
 //		System.out.println(dfsString.dfs("A"));
-//		Graph<Integer> graphTop = new Graph.GraphBuilder<Integer>(7).directed().build();
+//		Graph<Integer> graphTop = new Graph.Builder<Integer>(7).directed().build();
 //		graphTop.addEdge(0, 1);
 //		graphTop.addEdge(0, 2);
 //		graphTop.addEdge(0, 5);
@@ -39,7 +39,7 @@ public class Main {
 //		graphTop.addEmptyNode(6);
 //		TopSort<Integer> topSort = new TopSort<>(graphTop);
 //		Arrays.stream(topSort.execute(0)).forEach(i -> System.out.print(i + " "));
-//		Graph<Integer> graph = new Graph.GraphBuilder<Integer>(6).weighted().build();
+//		Graph<Integer> graph = new Graph.Builder<Integer>(6).weighted().build();
 //		graph.addEdge(0, 1, 3);
 //		graph.addEdge(0, 2, 1);
 //		graph.addEdge(1, 3, 1);
@@ -62,7 +62,7 @@ public class Main {
 //		fw.addEdge(5, 4, -2);
 //		fw.solve();
 //		fw.printPaths();
-//		Graph<Integer> graphBridges = new Graph.GraphBuilder<Integer>(9).build();
+//		Graph<Integer> graphBridges = new Graph.Builder<Integer>(9).build();
 //		graphBridges.addEdge(0, 1);
 //		graphBridges.addEdge(1, 2);
 //		graphBridges.addEdge(2, 0);
@@ -75,7 +75,7 @@ public class Main {
 //		graphBridges.addEdge(8, 5);
 //		Bridges<Integer> bridges = new Bridges<>(graphBridges);
 //		bridges.solve().forEach(System.out::println);
-//		Graph<Integer> graphTarjan = new Graph.GraphBuilder<Integer>(8).directed().build();
+//		Graph<Integer> graphTarjan = new Graph.Builder<Integer>(8).directed().build();
 //		graphTarjan.addEdge(0, 1);
 //		graphTarjan.addEdge(1, 2);
 //		graphTarjan.addEdge(2, 0);
@@ -95,7 +95,7 @@ public class Main {
 //			component.forEach(i -> System.out.print(i + " "));
 //			System.out.println();
 //		}
-//		Graph<Integer> graphEulerian = new Graph.GraphBuilder<Integer>(7).directed().build();
+//		Graph<Integer> graphEulerian = new Graph.Builder<Integer>(7).directed().build();
 //		graphEulerian.addEmptyNode(0);
 //		graphEulerian.addEdge(1, 2);
 //		graphEulerian.addEdge(1, 3);
@@ -111,7 +111,7 @@ public class Main {
 //		graphEulerian.addEdge(6, 3);
 //		EulerianPath<Integer> ep = new EulerianPath<>(graphEulerian);
 //		ep.solve().forEach(i -> System.out.print(i + " "));
-//		Graph<Integer> graphPrim = new Graph.GraphBuilder<Integer>(7).weighted().build();
+//		Graph<Integer> graphPrim = new Graph.Builder<Integer>(7).weighted().build();
 //		graphPrim.addEdge(0, 1, 9);
 //		graphPrim.addEdge(0, 2, 0);
 //		graphPrim.addEdge(0, 3, 5);

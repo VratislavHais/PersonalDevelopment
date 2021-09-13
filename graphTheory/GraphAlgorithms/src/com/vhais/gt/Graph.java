@@ -13,11 +13,11 @@ public class Graph<T extends Comparable<T>> {
 	private final boolean weighted;
 	private final int numberOfNodes;
 
-	private Graph(Map<T, List<Edge<T>>> graph, boolean directed, boolean weighted, int numberOfNodes) {
-		this.graph = graph;
-		this.directed = directed;
-		this.weighted = weighted;
-		this.numberOfNodes = numberOfNodes;
+	private Graph(Builder<T> builder) {
+		this.graph = builder.graph;
+		this.directed = builder.directed;
+		this.weighted = builder.weighted;
+		this.numberOfNodes = builder.numberOfNodes;
 	}
 
 	public Set<T> nodeList() {
@@ -107,33 +107,33 @@ public class Graph<T extends Comparable<T>> {
 		return graph.keySet();
 	}
 
-	public static class GraphBuilder<T extends Comparable<T>> {
+	public static class Builder<T extends Comparable<T>> {
 		private Map<T, List<Graph.Edge<T>>> graph = new HashMap<>();
 		private boolean directed = false;
 		private boolean weighted = false;
 		private final int numberOfNodes;
 
-		public GraphBuilder(int numberOfNodes) {
+		public Builder(int numberOfNodes) {
 			this.numberOfNodes = numberOfNodes;
 		}
 
-		public GraphBuilder<T> graph(Map<T, List<Graph.Edge<T>>> graph) {
+		public Builder<T> graph(Map<T, List<Graph.Edge<T>>> graph) {
 			this.graph = graph;
 			return this;
 		}
 
-		public GraphBuilder<T> directed() {
+		public Builder<T> directed() {
 			this.directed = true;
 			return this;
 		}
 
-		public GraphBuilder<T> weighted() {
+		public Builder<T> weighted() {
 			this.weighted = true;
 			return this;
 		}
 
 		public Graph<T> build() {
-			return new Graph<T>(graph, directed, weighted, numberOfNodes);
+			return new Graph<T>(this);
 		}
 	}
 
