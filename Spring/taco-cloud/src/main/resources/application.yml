@@ -1,0 +1,16 @@
+spring:
+  datasource:
+    generate-unique-name: false
+    name: tacocloud
+  data:
+    rest:
+      base-path: /api
+
+logging:
+  level:
+    root: DEBUG
+#    com.vhais.practice.tacocloud: DEBUG
+
+taco:
+  orders:
+    pageSize: 10

@@ -54,5 +54,5 @@ class Player:
         if not self._is_ai:
             move_list = self._get_manual_move(grid)
         else:
-            move_list = self._get_ai_move(grid, self._mark)["move"]
+            move_list = self._get_ai_move(grid, self._mark, 5)["move"]
         return move_list

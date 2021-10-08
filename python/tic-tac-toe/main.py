@@ -13,7 +13,8 @@ def get_player_move(grid: Grid, player: Player) -> List[int]:
 
 
 players = (Player("Player 1", "X"), Player("Player 2", "O", True))
-winning_score = grid_size = 3
+winning_score = 4
+grid_size = 5
 # with open("grid.pickle", "rb") as file:
 #     grid = pickle.load(file)
 grid = Grid(grid_size, winning_score)
