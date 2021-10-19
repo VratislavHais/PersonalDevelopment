@@ -19,12 +19,17 @@ class Game:
 
     def play(self, screen):
         quit_ = False
-        while not self.player.is_dead and not quit_:
+        while not self.player.is_dead.value and not quit_:
             screen.blit(self.player.image, (self.player.coordinates.to_tuple()))
             for event in pygame.event.get():
+                print(event)
                 if event.type == pygame.QUIT:
-                    quit_ = False
+                    self.end_game()
+                    quit_ = True
             pygame.display.update()
+
+    def end_game(self):
+        self.player.end_game()
 
     def get_player(self):
         return self.player

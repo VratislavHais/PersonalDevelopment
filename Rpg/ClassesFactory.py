@@ -5,7 +5,7 @@ import Class
 
 class ClassesFactory:
     def __init__(self):
-        self._classes = (Class.Warrior, Class.Mage)
+        self._classes = (Class.Warrior, Class.Mage, Class.Rogue)
 
     def available_classes(self) -> Tuple:
         return self._classes
