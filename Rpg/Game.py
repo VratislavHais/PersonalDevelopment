@@ -9,6 +9,12 @@ import pygame
 class Game:
     X = 0
     Y = 1
+    MOVEMENTS = {
+        pygame.K_LEFT: (-10, 0),
+        pygame.K_RIGHT: (10, 0),
+        pygame.K_UP: (0, -10),
+        pygame.K_DOWN: (0, 10)
+    }
 
     def __init__(self, board_size: Tuple[int, int]):
         self._round_number = 0
@@ -20,12 +26,14 @@ class Game:
     def play(self, screen):
         quit_ = False
         while not self.player.is_dead.value and not quit_:
-            screen.blit(self.player.image, (self.player.coordinates.to_tuple()))
             for event in pygame.event.get():
-                print(event)
+                screen.fill((78, 138, 58))
                 if event.type == pygame.QUIT:
                     self.end_game()
                     quit_ = True
+                if event.type == pygame.KEYDOWN and event.key in self.MOVEMENTS:
+                    self._change_player_coords(event.key)
+            screen.blit(self.player.image, (self.player.coordinates.values()))
             pygame.display.update()
 
     def end_game(self):
@@ -49,3 +57,6 @@ class Game:
 
         picked_name = input("Choose name: ")
         return factory.pick_class(int(picked_class) - 1, picked_name, Coordinates(0, self.board_size[self.Y]))
+
+    def _change_player_coords(self, event: pygame.event):
+        self.player.coordinates.update(self.MOVEMENTS[event], self.board_size)

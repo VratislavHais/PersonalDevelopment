@@ -41,7 +41,6 @@ class Character(ABC):
 
     def regen(self):
         while not self.is_dead.value and not self.game_ended.value:
-            print("running regen")
             if not self.in_combat:
                 self.health_regen(self.attributes.hp_regen)
                 self.mana_regen(self.attributes.mp_regen)

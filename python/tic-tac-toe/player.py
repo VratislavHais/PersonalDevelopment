@@ -51,6 +51,11 @@ class Player:
         return best
 
     def get_move(self, grid: Grid) -> List[int]:
+        """
+        get the next move
+        :param grid: game grid
+        :return: x and y coordinates
+        """
         if not self._is_ai:
             move_list = self._get_manual_move(grid)
         else:
