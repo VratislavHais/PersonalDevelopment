@@ -9,23 +9,26 @@ class EnemyFactory(ABC):
     def available_enemies(self):
         pass
 
-    @property
     @abstractmethod
-    def boss(self):
+    def boss(self, coordinates):
         pass
-    
-    def generate_random_enemy(self) -> Enemy.Enemy:
-        return self.get_enemy()()
+
+    def generate_random_enemy(self, coordinates) -> Enemy.Enemy:
+        return self.get_enemy()(coordinates)
 
     def get_enemy(self):
-        return self.available_enemies[randint(0, len(self.available_enemies)-1)]
+        return self.available_enemies[randint(0, len(self.available_enemies) - 1)]
 
 
 class GoblinFactory(EnemyFactory):
     available_enemies = (Enemy.GoblinWarrior, Enemy.GoblinMage)
-    boss = Enemy.GoblinBoss()
+
+    def boss(self, coordinates):
+        return Enemy.GoblinBoss(coordinates)
 
 
 class OgreFactory(EnemyFactory):
     available_enemies = (Enemy.OgreWarrior, Enemy.OgreMage)
-    boss = Enemy.OgreBoss()
+
+    def boss(self, coordinates):
+        return Enemy.OgreBoss(coordinates)

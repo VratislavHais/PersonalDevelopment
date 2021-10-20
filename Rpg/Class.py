@@ -8,7 +8,7 @@ class Warrior(Character):
     image = pygame.image.load("images/warrior.png")
     
     def __init__(self, name: str, coordinates: Coordinates):
-        super().__init__(200, 0, 1.5, 0, 25, 6, 10, Weapon.RustySword, coordinates)
+        super().__init__(200, 0, 3, 0, 25, 6, 10, Weapon.RustySword, coordinates)
         self.name = name
 
 

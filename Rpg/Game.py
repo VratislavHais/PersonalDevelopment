@@ -26,15 +26,16 @@ class Game:
     def play(self, screen):
         quit_ = False
         while not self.player.is_dead.value and not quit_:
-            for event in pygame.event.get():
-                screen.fill((78, 138, 58))
-                if event.type == pygame.QUIT:
-                    self.end_game()
-                    quit_ = True
-                if event.type == pygame.KEYDOWN and event.key in self.MOVEMENTS:
-                    self._change_player_coords(event.key)
-            screen.blit(self.player.image, (self.player.coordinates.values()))
-            pygame.display.update()
+            quit_ = self.game_board.play(self.player, screen)
+            # for event in pygame.event.get():
+            #     screen.fill((78, 138, 58))
+            #     if event.type == pygame.QUIT:
+            #         self.end_game()
+            #         quit_ = True
+            #     if event.type == pygame.KEYDOWN and event.key in self.MOVEMENTS:
+            #         self._change_player_coords(event.key)
+            # screen.blit(self.player.image, (self.player.coordinates.values()))
+            # pygame.display.update()
 
     def end_game(self):
         self.player.end_game()
@@ -44,7 +45,7 @@ class Game:
 
     def _new_game_board(self) -> GameBoard:
         self._round_number += 1
-        return GameBoard(4, "goblins", self._round_number)
+        return GameBoard(4, "goblins", self._round_number, self.board_size)
 
     def _create_new_player(self) -> Character:
         factory = ClassesFactory()
@@ -58,5 +59,5 @@ class Game:
         picked_name = input("Choose name: ")
         return factory.pick_class(int(picked_class) - 1, picked_name, Coordinates(0, self.board_size[self.Y]))
 
-    def _change_player_coords(self, event: pygame.event):
+    def _change_player_coords(self, event):
         self.player.coordinates.update(self.MOVEMENTS[event], self.board_size)

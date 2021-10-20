@@ -5,6 +5,7 @@ import Class
 
 class ClassesFactory:
     def __init__(self):
+        # self._classes = [m[0] for m in inspect.getmembers(Class, inspect.isclass) if m[1].__module__ == "Class"]
         self._classes = (Class.Warrior, Class.Mage, Class.Rogue)
 
     def available_classes(self) -> Tuple:
