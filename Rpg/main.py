@@ -1,16 +1,14 @@
 from Game import Game
-import pygame
 
 
 def main():
     board_size = (800, 800)
-    pygame.init()
-    screen = pygame.display.set_mode(board_size)
-    pygame.display.set_caption("Simple RPG")
-    running = True
+    # pygame.init()
+    # screen = pygame.display.set_mode(board_size)
+    # pygame.display.set_caption("Simple RPG")
     game = Game(board_size)
     print(game.get_player())
-    game.play(screen)
+    game.play()
     # while running:
     #     screen.blit(pygame.image.load("images/grass.png"), (0, 0))
     #     for event in pygame.event.get():

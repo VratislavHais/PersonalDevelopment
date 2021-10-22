@@ -4,6 +4,7 @@ from random import randint
 from ctypes import c_bool
 from Statusbar import Statusbar
 from typing import Tuple
+from Screen import Screen
 import time
 import Weapon
 import multiprocessing as mp
@@ -82,9 +83,9 @@ class Character(ABC):
         else:
             return 0
 
-    def display(self, screen):
-        self.status_bar.display(screen)
-        screen.blit(self.image, (self.coordinates.values()))
+    def display(self):
+        self.status_bar.display(Screen.get_screen())
+        Screen.get_screen().blit(self.image, (self.coordinates.values()))
 
     def move(self, movement: Tuple[int, int], board_size: Tuple[int, int]):
         is_on_edge = self.coordinates.update(movement, board_size)

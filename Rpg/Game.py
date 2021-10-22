@@ -3,6 +3,7 @@ from ClassesFactory import ClassesFactory
 from Character import Character
 from Coordinates import Coordinates
 from typing import Tuple
+from Screen import Screen
 import pygame
 
 
@@ -21,12 +22,12 @@ class Game:
         self.board_size = (board_size[self.X] - 60, board_size[self.Y] - 60)
         self.game_board = self._new_game_board()
         self.player = self._create_new_player()
-        print(self.player)
+        Screen(board_size)
 
-    def play(self, screen):
+    def play(self):
         quit_ = False
         while not self.player.is_dead.value and not quit_:
-            quit_ = self.game_board.play(self.player, screen)
+            quit_ = self.game_board.play(self.player)
             # for event in pygame.event.get():
             #     screen.fill((78, 138, 58))
             #     if event.type == pygame.QUIT:
