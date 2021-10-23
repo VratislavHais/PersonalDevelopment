@@ -2,16 +2,23 @@ from abc import ABC
 from Character import Character
 import pygame
 import Weapon
+import Spell
 
 
 class Enemy(Character, ABC):
     def __init__(self, max_hp: float, max_mp: float, str_: int, int_: int, agi: int, weapon: Weapon,
-                 coordinates, xp_on_kill: int, drop: Weapon):
-        super().__init__(max_hp, max_mp, 0, 0, str_, int_, agi, weapon, coordinates)
+                 coordinates, xp_on_kill: int, drop: Weapon, spells=None):
+        super().__init__(max_hp, max_mp, str_, int_, agi, weapon, coordinates, spells)
         self.xp_on_kill = xp_on_kill
         self.drop_on_death = drop
 
-    def run_regen(self):
+    def attack_or_spell(self, target):
+        if self.spells is not None and self.attributes.mp.value >= 10:
+            self.cast_spell(0, target)
+        else:
+            self.weapon_attack(target)
+
+    def pick_spell(self):
         pass
 
 
@@ -27,7 +34,7 @@ class GoblinMage(Enemy):
     image = pygame.image.load("images/goblin.png")
 
     def __init__(self, coordinates):
-        super().__init__(70, 20, 1, 5, 4, Weapon.Staff, coordinates, 50, Weapon.Staff)
+        super().__init__(70, 20, 1, 5, 4, Weapon.Staff, coordinates, 50, Weapon.Staff, [Spell.Fireball])
         self.name = self.__class__.__name__
 
 
@@ -35,7 +42,7 @@ class GoblinBoss(Enemy):
     image = pygame.image.load("images/goblin_boss.png")
 
     def __init__(self, coordinates):
-        super().__init__(120, 25, 8, 6, 8, Weapon.Scythe, coordinates, 150, Weapon.Scythe)
+        super().__init__(120, 25, 8, 6, 8, Weapon.Scythe, coordinates, 150, Weapon.Scythe, [Spell.Fireball])
         self.name = "Scumrat"
 
 
@@ -51,7 +58,7 @@ class OgreMage(Enemy):
     image = pygame.image.load("images/ogre_mage.png")
 
     def __init__(self, coordinates):
-        super().__init__(100, 10, 1, 4, 1, Weapon.Mace, coordinates, 100, Weapon.Mace)
+        super().__init__(100, 10, 1, 4, 1, Weapon.Mace, coordinates, 100, Weapon.Mace, [Spell.MagicMissile])
         self.name = self.__class__.__name__
 
 
@@ -59,5 +66,5 @@ class OgreBoss(Enemy):
     image = pygame.image.load("images/ogre_boss.png")
 
     def __init__(self, coordinates):
-        super().__init__(250, 20, 12, 3, 4, Weapon.Mace, coordinates, 300, Weapon.Frostmourne)
+        super().__init__(250, 20, 12, 3, 4, Weapon.Mace, coordinates, 300, Weapon.Frostmourne, [Spell.Fireball])
         self.name = "Dummydumdum"

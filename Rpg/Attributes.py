@@ -3,13 +3,11 @@ from multiprocessing import Value
 
 
 class Attributes:
-    def __init__(self, max_hp: float, max_mp: float, hp_regen: float, mp_regen: float, str_: int, int_: int, agi: int):
+    def __init__(self, max_hp: float, max_mp: float, str_: int, int_: int, agi: int):
         self.max_hp = Value('f', max_hp)
         self.hp = Value('f', max_hp)
         self.max_mp = Value('f', max_mp)
         self.mp = Value('f', max_mp)
-        self.hp_regen = hp_regen
-        self.mp_regen = mp_regen
         self.strength = str_
         self.intelligence = int_
         self.agility = agi

@@ -5,22 +5,21 @@ from ctypes import c_bool
 from Statusbar import Statusbar
 from typing import Tuple
 from Screen import Screen
-import time
 import Weapon
 import multiprocessing as mp
 
 
 class Character(ABC):
-    def __init__(self, max_hp: float, max_mp: float, hp_regen: float, mp_regen: float, str_: int, int_: int,
-                 agi: int, weapon: Weapon, coords=None):
-        self.attributes = Attributes(max_hp, max_mp, hp_regen, mp_regen, str_, int_, agi)
+    def __init__(self, max_hp: float, max_mp: float, str_: int, int_: int,
+                 agi: int, weapon: Weapon, coords=None, spells=None):
+        self.attributes = Attributes(max_hp, max_mp, str_, int_, agi)
         self.is_dead = mp.Value(c_bool, False)
         self.in_combat = mp.Value(c_bool, False)
         self.game_ended = mp.Value(c_bool, False)
         self.weapon = weapon
         self.coordinates = coords
+        self.spells = spells
         self.status_bar = Statusbar(coords, max_mp)
-        self.run_regen()
 
     @property
     @abstractmethod
@@ -43,38 +42,21 @@ class Character(ABC):
         with self.game_ended.get_lock():
             self.game_ended.value = True
 
-    def regen(self):
-        while not self.is_dead.value and not self.game_ended.value:
-            if not self.in_combat.value:
-                self.health_regen(self.attributes.hp_regen)
-                self.mana_regen(self.attributes.mp_regen)
-            time.sleep(1)
-
-    def health_regen(self, hp_regen: float):
-        self.attributes.update_hp(hp_regen)
-        self.update_hp_bar()
-
-    def mana_regen(self, mp_regen: float):
-        self.attributes.update_mp(mp_regen)
-        self.update_mp_bar()
-
-    def run_regen(self):
-        process = mp.Process(target=self.regen, args=(), daemon=True)
-        process.start()
-
     def hit(self, dmg: float):
         self.attributes.update_hp(-dmg)
         self.update_hp_bar()
         if self.attributes.hp.value <= 0:
             self.set_dead()
 
-    def heal(self, hp: float):
-        self.health_regen(hp)
+    @abstractmethod
+    def attack_or_spell(self, target):
+        pass
 
-    def mana_recovery(self, mp: float):
-        self.mana_regen(mp)
+    @abstractmethod
+    def pick_spell(self):
+        pass
 
-    def attack(self, target) -> int:
+    def weapon_attack(self, target) -> int:
         dodged = randint(0, 100) <= self.attributes.agility
         if not dodged:
             damage_done = (self.weapon.damage + randint(1, 10)) * (self.attributes.strength / 100 + 1)
@@ -82,6 +64,15 @@ class Character(ABC):
             return damage_done
         else:
             return 0
+
+    def cast_spell(self, spell: int, target):
+        self.attributes.update_mp(-self.spells[spell].mana_consumption)
+        self.update_mp_bar()
+        if self.spells[spell].__class__.__name__ == "Heal":
+            target = self
+        damage = (self.spells[spell].damage + randint(1, 20)) * (self.attributes.intelligence / 100 + 1)
+        print(target)
+        target.hit(damage)
 
     def display(self):
         self.status_bar.display(Screen.get_screen())
@@ -99,5 +90,5 @@ class Character(ABC):
         self.status_bar.update_mp(self.attributes.mp.value, self.attributes.max_mp.value)
 
     def __str__(self):
-        return self.name + " (" + self.__class__.__name__ + "):\n" +\
-            str(self.attributes)
+        return self.name + " (" + self.__class__.__name__ + "):\n" + \
+               str(self.attributes)

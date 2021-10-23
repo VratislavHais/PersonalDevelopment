@@ -50,20 +50,27 @@ class GameBoard:
 
     def play(self, player: Character) -> bool:
         quit_ = False
+        enemy = None
         while not player.is_dead.value and not quit_ and len(self.enemies) > 0:
-            for event in pygame.event.get():
-                Screen.get_screen().fill((78, 138, 58))
-                if event.type == pygame.QUIT:
-                    quit_ = True
-                if event.type == pygame.KEYDOWN and event.key in self.MOVEMENTS:
-                    self._change_player_coords(player, event.key)
-            if player.coordinates.is_in_list(self.enemies):
-                enemy = player.coordinates.retrieve_from_list(self.enemies)
-                combat.start_combat(player, enemy)
+            if player.in_combat.value:
+                combat.combat(player, enemy)
                 if player.is_dead.value:
                     player.end_game()
-                else:
+                elif enemy.is_dead.value:
                     self.enemies.remove(enemy)
+                    enemy = None
+                    player.from_combat()
+            else:
+                for event in pygame.event.get():
+                    Screen.get_screen().fill((78, 138, 58))
+                    if event.type == pygame.QUIT:
+                        quit_ = True
+                    if event.type == pygame.KEYDOWN and event.key in self.MOVEMENTS:
+                        self._change_player_coords(player, event.key)
+                if player.coordinates.is_in_list(self.enemies):
+                    enemy = player.coordinates.retrieve_from_list(self.enemies)
+                    player.to_combat()
+                    combat.combat(player, enemy)
             self._show_enemies()
             player.display()
             pygame.display.update()
