@@ -2,9 +2,12 @@ from Character import Character
 from Enemy import Enemy
 
 
-def combat(player: Character, enemy: Enemy):
-    # player.to_combat()
-    # while not player.is_dead.value and not enemy.is_dead.value:
+def combat_step(self, player: Character, enemy: Enemy):
     player.attack_or_spell(enemy)
     enemy.attack_or_spell(player)
-    # player.from_combat()
+    if player.is_dead.value:
+        player.end_game()
+    elif enemy.is_dead.value:
+        self.enemies.remove(enemy)
+        player.from_combat()
+

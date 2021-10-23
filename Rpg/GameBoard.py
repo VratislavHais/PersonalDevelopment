@@ -1,3 +1,4 @@
+import combat
 from Coordinates import Coordinates
 from Enemy import Enemy
 from Character import Character
@@ -5,15 +6,14 @@ from typing import Tuple
 from Screen import Screen
 import EnemyFactory
 import pygame
-import combat
 
 
 class GameBoard:
     MOVEMENTS = {
-        pygame.K_LEFT: (-10, 0),
-        pygame.K_RIGHT: (10, 0),
-        pygame.K_UP: (0, -10),
-        pygame.K_DOWN: (0, 10)
+        pygame.K_LEFT: (-0.2, 0),
+        pygame.K_RIGHT: (0.2, 0),
+        pygame.K_UP: (0, -0.2),
+        pygame.K_DOWN: (0, 0.2)
     }
 
     def __init__(self, number_of_enemies: int, enemy_type: str, round_number: int, board_size: Tuple[int, int]):
@@ -53,31 +53,28 @@ class GameBoard:
         enemy = None
         while not player.is_dead.value and not quit_ and len(self.enemies) > 0:
             if player.in_combat.value:
-                combat.combat(player, enemy)
-                if player.is_dead.value:
-                    player.end_game()
-                elif enemy.is_dead.value:
-                    self.enemies.remove(enemy)
-                    enemy = None
-                    player.from_combat()
+                combat.combat_step(player, enemy)
             else:
+                Screen.get_screen().fill((78, 138, 58))
                 for event in pygame.event.get():
-                    Screen.get_screen().fill((78, 138, 58))
                     if event.type == pygame.QUIT:
                         quit_ = True
-                    if event.type == pygame.KEYDOWN and event.key in self.MOVEMENTS:
-                        self._change_player_coords(player, event.key)
+                self._change_player_coords(player, pygame.key.get_pressed())
                 if player.coordinates.is_in_list(self.enemies):
                     enemy = player.coordinates.retrieve_from_list(self.enemies)
                     player.to_combat()
-                    combat.combat(player, enemy)
             self._show_enemies()
             player.display()
             pygame.display.update()
         return quit_
 
-    def _change_player_coords(self, player: Character, event):
-        player.move(self.MOVEMENTS[event], self.board_size)
+    def _change_player_coords(self, player: Character, key_pressed_list):
+        x = y = 0
+        for key in self.MOVEMENTS:
+            if key_pressed_list[key]:
+                x += self.MOVEMENTS[key][0]
+                y += self.MOVEMENTS[key][1]
+        player.move((x, y), self.board_size)
 
     def _show_enemies(self):
         for enemy in self.enemies:

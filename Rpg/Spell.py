@@ -18,13 +18,13 @@ class Spell(ABC):
 
 
 class Fireball(Spell):
-    mana_consumption = 10
+    mana_consumption = 15
     damage = 30
 
 
 class Heal(Spell):
     mana_consumption = 5
-    damage = -15  # heal
+    damage = -30  # heal
 
 
 class MagicMissile(Spell):
