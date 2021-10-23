@@ -46,9 +46,10 @@ class Player(Character, ABC):
         print("1) Attack with Weapon")
         print("2) Cast a Spell")
         decision = input("Pick your attack: ")
-        while not isinstance(decision, int) and (int(decision) != 1 and int(decision) != 2):
+        while not decision.isdigit() or (int(decision) != 1 and int(decision) != 2):
             print("Invalid input!")
             decision = input("Pick your attack: ")
+            print(not isinstance(decision, int), (int(decision) != 1 and int(decision) != 2))
         if int(decision) == 1:
             self.weapon_attack(target)
         else:
@@ -60,6 +61,9 @@ class Player(Character, ABC):
                 self.attack_or_spell(target)
             else:
                 self.cast_spell(spell_to_cast - 1, target)
+
+    def add_xp(self, xp: int):
+        self.attributes.gain_xp(xp)
 
     def pick_spell(self) -> int:
         print("Mana available: " + str(self.attributes.mp.value))

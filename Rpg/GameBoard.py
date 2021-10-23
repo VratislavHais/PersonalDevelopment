@@ -1,7 +1,7 @@
 import combat
 from Coordinates import Coordinates
 from Enemy import Enemy
-from Character import Character
+from Player import Player
 from typing import Tuple
 from Screen import Screen
 import EnemyFactory
@@ -48,12 +48,15 @@ class GameBoard:
         elif enemy_type == "ogre":
             return EnemyFactory.OgreFactory()
 
-    def play(self, player: Character) -> bool:
+    def play(self, player: Player) -> bool:
         quit_ = False
         enemy = None
         while not player.is_dead.value and not quit_ and len(self.enemies) > 0:
             if player.in_combat.value:
                 combat.combat_step(player, enemy)
+                if enemy.is_dead.value:
+                    self.enemies.remove(enemy)
+                    player.add_xp(enemy.xp_on_kill)
             else:
                 Screen.get_screen().fill((78, 138, 58))
                 for event in pygame.event.get():
@@ -68,7 +71,7 @@ class GameBoard:
             pygame.display.update()
         return quit_
 
-    def _change_player_coords(self, player: Character, key_pressed_list):
+    def _change_player_coords(self, player: Player, key_pressed_list):
         x = y = 0
         for key in self.MOVEMENTS:
             if key_pressed_list[key]:

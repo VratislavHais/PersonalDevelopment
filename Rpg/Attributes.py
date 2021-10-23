@@ -20,8 +20,8 @@ class Attributes:
         self.strength += math.ceil(self.strength / 10)
         self.intelligence += math.ceil(self.intelligence / 10)
         self.agility += math.ceil(self.agility / 10)
-        self.update_hp(self.max_hp)
-        self.update_mp(self.max_mp)
+        self.update_hp(self.max_hp.value)
+        self.update_mp(self.max_mp.value)
         self.xp_to_lvl *= 2
 
     def _update_max_hp(self, value: float):

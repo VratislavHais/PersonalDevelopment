@@ -53,7 +53,7 @@ class Game:
         print("Available Classes:")
         print(factory)
         picked_class = input("Choose class: ")
-        while not isinstance(picked_class, int) and (int(picked_class)-1 >= len(factory) or int(picked_class)-1 < 0):
+        while not picked_class.isdigit() or (int(picked_class)-1 >= len(factory) or int(picked_class)-1 < 0):
             print("Invalid input!")
             picked_class = input("Choose class: ")
 
