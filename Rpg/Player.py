@@ -49,7 +49,6 @@ class Player(Character, ABC):
         while not decision.isdigit() or (int(decision) != 1 and int(decision) != 2):
             print("Invalid input!")
             decision = input("Pick your attack: ")
-            print(not isinstance(decision, int), (int(decision) != 1 and int(decision) != 2))
         if int(decision) == 1:
             self.weapon_attack(target)
         else:

@@ -2,7 +2,6 @@ import combat
 from Coordinates import Coordinates
 from Enemy import Enemy
 from Player import Player
-from typing import Tuple
 from Screen import Screen
 import EnemyFactory
 import pygame
@@ -16,10 +15,9 @@ class GameBoard:
         pygame.K_DOWN: (0, 0.2)
     }
 
-    def __init__(self, number_of_enemies: int, enemy_type: str, round_number: int, board_size: Tuple[int, int]):
-        self.board_size = board_size
+    def __init__(self, number_of_enemies: int, enemy_type: str, round_number: int):
+        self.board_size = (Screen.get_size()[0] - 60, Screen.get_size()[1] - 60)
         self.enemies = self._generate_enemies(number_of_enemies, enemy_type, round_number)
-        print(self.enemies)
 
     def _generate_enemies(self, number_of_enemies: int, enemy_type: str, round_number: int) -> list:
         result = []
@@ -43,7 +41,7 @@ class GameBoard:
         return factory.boss(coordinates)
 
     def _enemy_factory(self, enemy_type: str) -> EnemyFactory:
-        if enemy_type == "goblins":
+        if enemy_type == "goblin":
             return EnemyFactory.GoblinFactory()
         elif enemy_type == "ogre":
             return EnemyFactory.OgreFactory()
@@ -52,6 +50,8 @@ class GameBoard:
         quit_ = False
         enemy = None
         while not player.is_dead.value and not quit_ and len(self.enemies) > 0:
+            if len(self.enemies) < 1:
+                break
             if player.in_combat.value:
                 combat.combat_step(player, enemy)
                 if enemy.is_dead.value:

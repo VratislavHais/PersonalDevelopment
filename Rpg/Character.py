@@ -71,7 +71,6 @@ class Character(ABC):
         if self.spells[spell].__class__.__name__ == "Heal":
             target = self
         damage = (self.spells[spell].damage + randint(1, 20)) * (self.attributes.intelligence / 100 + 1)
-        print(target)
         target.hit(damage)
 
     def display(self):
