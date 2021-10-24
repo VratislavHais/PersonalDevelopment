@@ -77,7 +77,7 @@ class GameBoard:
             if key_pressed_list[key]:
                 x += self.MOVEMENTS[key][0]
                 y += self.MOVEMENTS[key][1]
-        player.move((x, y), self.board_size)
+        player.move(x, y)
 
     def _show_enemies(self):
         for enemy in self.enemies:

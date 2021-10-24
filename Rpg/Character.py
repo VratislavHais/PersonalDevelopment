@@ -77,11 +77,6 @@ class Character(ABC):
         self.status_bar.display(Screen.get_screen())
         Screen.get_screen().blit(self.image, (self.coordinates.values()))
 
-    def move(self, movement: Tuple[int, int], board_size: Tuple[int, int]):
-        is_on_edge = self.coordinates.update(movement, board_size)
-        if not is_on_edge:
-            self.status_bar.update_coordinates(movement, board_size)
-
     def update_hp_bar(self):
         self.status_bar.update_hp(self.attributes.hp.value, self.attributes.max_hp.value)
 

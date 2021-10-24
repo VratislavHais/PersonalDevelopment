@@ -1,3 +1,4 @@
+from typing import Tuple
 from Character import Character
 import Weapon
 import Spell
@@ -75,6 +76,13 @@ class Player(Character, ABC):
             print("Invalid input!")
             picked = input("Pick your spell: ")
         return int(picked)
+
+    def move(self, x: int, y: int):
+        updates = ((x, 0), (0, y))
+        for update in updates:
+            if not (self.status_bar.coordinates.over_border(update) or self.coordinates.over_border(update)):
+                self.coordinates.update(update)
+                self.status_bar.coordinates.update(update)
 
 
 class Warrior(Player):

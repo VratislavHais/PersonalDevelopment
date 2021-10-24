@@ -3,7 +3,8 @@ from random import randint
 
 
 class Coordinates:
-    def __init__(self, x=0, y=0, rand=False, board_size=(760, 760)):
+    def __init__(self, x=0, y=0, rand=False, board_size=(740, 740)):
+        self.board_size = board_size
         if rand:
             self.x = randint(0, board_size[0])
             self.y = randint(0, board_size[1])
@@ -14,23 +15,22 @@ class Coordinates:
     def values(self):
         return self.x, self.y
 
-    def update(self, coord: Tuple[int, int], max_size: Tuple[int, int]) -> bool:
-        edge = False
+    def update(self, coord: Tuple[int, int]):
         self.x += coord[0]
         if self.x < 0:
             self.x = 0
-            edge = True
-        elif self.x > max_size[0]:
-            self.x = max_size[0]
-            edge = True
+        elif self.x > self.board_size[0]:
+            self.x = self.board_size[0]
         self.y += coord[1]
         if self.y < 0:
             self.y = 0
-            edge = True
-        elif self.y > max_size[1]:
-            self.y = max_size[1]
-            edge = True
-        return edge
+        elif self.y > self.board_size[1]:
+            self.y = self.board_size[1]
+
+    def over_border(self, update: Tuple[int, int]) -> bool:
+        return self.x + update[0] < 0 or self.x + update[0] > self.board_size[0] or\
+                self.y + update[1] < 0 or self.y + update[1] > self.board_size[1]
+        # return self.board_size[0] < self.x + update[0] < 0 or self.board_size[1] < self.y + update[1] < 0
 
     def equals(self, other):
         if isinstance(other, Coordinates):

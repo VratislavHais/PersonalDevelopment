@@ -28,15 +28,6 @@ class Statusbar:
             if current > 0:
                 self.percent_mp.value = math.ceil(current / maximum * 100)
 
-    def update_coordinates(self, coord: Tuple[int, int], board_size: Tuple[int, int]):
-        y = coord[1]
-        if self.coordinates.y + y > board_size[1]:
-            self.coordinates.y = self.player_coordinates.y - 20
-        elif self.coordinates.y + y < 0:
-            self.coordinates.y = self.player_coordinates.y + 70
-        else:
-            self.coordinates.update(coord, board_size)
-
     def display(self, screen):
         x, y = self.coordinates.values()
         size_hp = self.bar_size * (self.percent_hp.value / 100)
