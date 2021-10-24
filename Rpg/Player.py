@@ -1,4 +1,3 @@
-from typing import Tuple
 from Character import Character
 import Weapon
 import Spell
@@ -12,7 +11,7 @@ import multiprocessing as mp
 class Player(Character, ABC):
     def __init__(self, max_hp: float, max_mp: float, hp_regen: float, mp_regen: float, str_: int, int_: int,
                  agi: int, weapon: Weapon, coords=None, spells=None):
-        super().__init__(max_hp, max_mp, str_, int_, agi, weapon, coords, spells)
+        super().__init__(max_hp, max_mp, str_, int_, agi, weapon, coords, spells, True)
         self.hp_regen = hp_regen
         self.mp_regen = mp_regen
         self.run_regen()
@@ -64,6 +63,7 @@ class Player(Character, ABC):
 
     def add_xp(self, xp: int):
         self.attributes.gain_xp(xp)
+        self.status_bar.update_xp(self.attributes.xp, self.attributes.xp_to_lvl)
 
     def pick_spell(self) -> int:
         print("Mana available: " + str(self.attributes.mp.value))
@@ -72,7 +72,7 @@ class Player(Character, ABC):
         for i, spell in enumerate(self.spells):
             print(str(i + 1) + ") " + str(spell))
         picked = input("Pick your spell: ")
-        while not isinstance(picked, int) and (int(picked) > len(self.spells) or int(picked) < 0):
+        while not picked.isdigit() or (int(picked) > len(self.spells) or int(picked) < 0):
             print("Invalid input!")
             picked = input("Pick your spell: ")
         return int(picked)

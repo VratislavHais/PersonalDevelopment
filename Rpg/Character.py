@@ -3,7 +3,6 @@ from Attributes import Attributes
 from random import randint
 from ctypes import c_bool
 from Statusbar import Statusbar
-from typing import Tuple
 from Screen import Screen
 import Weapon
 import multiprocessing as mp
@@ -11,7 +10,7 @@ import multiprocessing as mp
 
 class Character(ABC):
     def __init__(self, max_hp: float, max_mp: float, str_: int, int_: int,
-                 agi: int, weapon: Weapon, coords=None, spells=None):
+                 agi: int, weapon: Weapon, coords=None, spells=None, xp_bar=False):
         self.attributes = Attributes(max_hp, max_mp, str_, int_, agi)
         self.is_dead = mp.Value(c_bool, False)
         self.in_combat = mp.Value(c_bool, False)
@@ -19,7 +18,7 @@ class Character(ABC):
         self.weapon = weapon
         self.coordinates = coords
         self.spells = spells
-        self.status_bar = Statusbar(coords, max_mp)
+        self.status_bar = Statusbar(coords, max_mp, xp_bar)
 
     @property
     @abstractmethod
