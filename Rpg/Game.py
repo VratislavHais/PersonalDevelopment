@@ -12,7 +12,6 @@ class Game:
 
     def __init__(self):
         self._round_number = 0
-        # self.board_size = Screen.get_size()
         self.player = self._create_new_player()
 
     def play(self):
@@ -29,7 +28,7 @@ class Game:
 
     def _new_game_board(self, enemy_type: str) -> GameBoard:
         self._round_number += 1
-        return GameBoard(4, enemy_type, self._round_number)
+        return GameBoard(4 + self._round_number // 2, enemy_type, self._round_number)
 
     def _create_new_player(self) -> Player:
         factory = ClassesFactory()
@@ -41,4 +40,4 @@ class Game:
             picked_class = input("Choose class: ")
 
         picked_name = input("Choose name: ")
-        return factory.pick_class(int(picked_class) - 1, picked_name, Coordinates(0, Screen.get_size()[self.Y] - 60))
+        return factory.pick_class(int(picked_class) - 1, picked_name, Coordinates(0, Screen.get_size()[self.Y]))

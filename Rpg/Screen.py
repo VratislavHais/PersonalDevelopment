@@ -5,6 +5,7 @@ import pygame
 class Screen:
     __instance = None
     __size = (800, 800)
+    __usable_size = (740, 740)
 
     @staticmethod
     def get_screen():
@@ -14,7 +15,7 @@ class Screen:
 
     @staticmethod
     def get_size():
-        return Screen.__size
+        return Screen.__usable_size
 
     def __init__(self, size: Tuple[int, int]):
         if Screen.__instance is not None:

@@ -16,7 +16,7 @@ class GameBoard:
     }
 
     def __init__(self, number_of_enemies: int, enemy_type: str, round_number: int):
-        self.board_size = (Screen.get_size()[0] - 60, Screen.get_size()[1] - 60)
+        self.board_size = Screen.get_size()
         self.enemies = self._generate_enemies(number_of_enemies, enemy_type, round_number)
 
     def _generate_enemies(self, number_of_enemies: int, enemy_type: str, round_number: int) -> list:
@@ -29,9 +29,10 @@ class GameBoard:
         return result
 
     def _random_unique_coord(self, list_of_enemies) -> Coordinates:
-        coord = Coordinates(rand=True, board_size=self.board_size)
-        while coord.is_in_list(list_of_enemies):
-            coord = Coordinates(rand=True, board_size=self.board_size)
+        updated_size = (self.board_size[0] - 60, self.board_size[1] - 60)
+        coord = Coordinates(rand=True, board_size=updated_size)
+        while coord.is_in_list(list_of_enemies) or coord.y < 20:
+            coord = Coordinates(rand=True, board_size=updated_size)
         return coord
 
     def _random_enemy(self, factory: EnemyFactory, coordinates: Coordinates) -> Enemy:
