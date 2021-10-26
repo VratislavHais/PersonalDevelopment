@@ -73,7 +73,7 @@ class Character(ABC):
         target.hit(damage)
 
     def display(self):
-        self.status_bar.display(Screen.get_screen())
+        self.status_bar.display()
         Screen.get_screen().blit(self.image, (self.coordinates.values()))
 
     def update_hp_bar(self):

@@ -1,4 +1,5 @@
 from Coordinates import Coordinates
+from Screen import Screen
 import pygame
 import math
 import multiprocessing as mp
@@ -29,25 +30,27 @@ class Statusbar:
         with self.percent_mp.get_lock():
             if current > 0:
                 self.percent_mp.value = math.ceil(current / maximum * 100)
-    
+
     def update_xp(self, current: float, maximum: int):
         self.percent_xp = math.ceil(current / maximum * 100)
 
-    def display(self, screen):
+    def display(self):
         x, y = self.coordinates.values()
         size_hp = self.bar_size * (self.percent_hp.value / 100)
         size_mp = self.bar_size * (self.percent_mp.value / 100)
         size_xp = self.bar_size * (self.percent_xp / 100)
         # hp bar
-        pygame.draw.rect(screen, self.color_hp, pygame.Rect(x, y, size_hp, self.bar_height))
-        pygame.draw.rect(screen, (0, 0, 0), pygame.Rect(x + size_hp, y, self.bar_size - size_hp, self.bar_height))
+        pygame.draw.rect(Screen.get_screen(), self.color_hp, pygame.Rect(x, y, size_hp, self.bar_height))
+        pygame.draw.rect(Screen.get_screen(), (0, 0, 0), pygame.Rect(x + size_hp, y, self.bar_size - size_hp,
+                                                                     self.bar_height))
         # mp bar
-        pygame.draw.rect(screen, self.color_mp, pygame.Rect(x, y + self.bar_height + self.space, size_mp,
-                                                            self.bar_height))
-        pygame.draw.rect(screen, (0, 0, 0), pygame.Rect(x + size_mp, y + self.bar_height + self.space,
-                                                        self.bar_size - size_mp, self.bar_height))
+        pygame.draw.rect(Screen.get_screen(), self.color_mp, pygame.Rect(x, y + self.bar_height + self.space, size_mp,
+                                                                         self.bar_height))
+        pygame.draw.rect(Screen.get_screen(), (0, 0, 0), pygame.Rect(x + size_mp, y + self.bar_height + self.space,
+                                                                     self.bar_size - size_mp, self.bar_height))
         if self.xp_bar:
-            pygame.draw.rect(screen, self.color_xp, pygame.Rect(x, y + (self.bar_height + self.space) * 2, size_xp,
-                                                                self.bar_height))
-            pygame.draw.rect(screen, (0, 0, 0), pygame.Rect(x + size_xp, y + (self.bar_height + self.space) * 2,
-                                                            self.bar_size - size_xp, self.bar_height))
+            pygame.draw.rect(Screen.get_screen(), self.color_xp, pygame.Rect(x, y + (self.bar_height + self.space) * 2,
+                                                                             size_xp, self.bar_height))
+            pygame.draw.rect(Screen.get_screen(), (0, 0, 0),
+                             pygame.Rect(x + size_xp, y + (self.bar_height + self.space) * 2,
+                                         self.bar_size - size_xp, self.bar_height))

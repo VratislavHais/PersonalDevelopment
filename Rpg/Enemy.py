@@ -1,4 +1,5 @@
-from abc import ABC
+from abc import ABC, abstractmethod
+from random import randint
 from Character import Character
 import pygame
 import Weapon
@@ -68,3 +69,34 @@ class OgreBoss(Enemy):
     def __init__(self, coordinates):
         super().__init__(250, 20, 12, 3, 4, Weapon.Mace, coordinates, 300, Weapon.Frostmourne, [Spell.Fireball])
         self.name = "Dummydumdum"
+
+
+class EnemyFactory(ABC):
+    @property
+    @abstractmethod
+    def available_enemies(self):
+        pass
+
+    @abstractmethod
+    def boss(self, coordinates):
+        pass
+
+    def generate_random_enemy(self, coordinates) -> Enemy:
+        return self.get_enemy()(coordinates)
+
+    def get_enemy(self):
+        return self.available_enemies[randint(0, len(self.available_enemies) - 1)]
+
+
+class GoblinFactory(EnemyFactory):
+    available_enemies = (GoblinWarrior, GoblinMage)
+
+    def boss(self, coordinates):
+        return GoblinBoss(coordinates)
+
+
+class OgreFactory(EnemyFactory):
+    available_enemies = (OgreWarrior, OgreMage)
+
+    def boss(self, coordinates):
+        return OgreBoss(coordinates)

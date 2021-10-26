@@ -1,9 +1,9 @@
 import combat
 from Coordinates import Coordinates
-from Enemy import Enemy
+import Enemy
 from Player import Player
 from Screen import Screen
-import EnemyFactory
+from Menu import Menu
 import pygame
 
 
@@ -35,21 +35,23 @@ class GameBoard:
             coord = Coordinates(rand=True, board_size=updated_size)
         return coord
 
-    def _random_enemy(self, factory: EnemyFactory, coordinates: Coordinates) -> Enemy:
+    def _random_enemy(self, factory: Enemy.EnemyFactory, coordinates: Coordinates) -> Enemy:
         return factory.generate_random_enemy(coordinates)
 
-    def _boss(self, factory: EnemyFactory, coordinates: Coordinates) -> Enemy:
+    def _boss(self, factory: Enemy.EnemyFactory, coordinates: Coordinates) -> Enemy:
         return factory.boss(coordinates)
 
-    def _enemy_factory(self, enemy_type: str) -> EnemyFactory:
+    def _enemy_factory(self, enemy_type: str) -> Enemy.EnemyFactory:
         if enemy_type == "goblin":
-            return EnemyFactory.GoblinFactory()
+            return Enemy.GoblinFactory()
         elif enemy_type == "ogre":
-            return EnemyFactory.OgreFactory()
+            return Enemy.OgreFactory()
 
     def play(self, player: Player) -> bool:
         quit_ = False
         enemy = None
+        # menu = Menu()
+        # menu.set_items(("item1", "item2", "item3", "item4"))
         while not player.is_dead.value and not quit_ and len(self.enemies) > 0:
             if len(self.enemies) < 1:
                 break
@@ -69,6 +71,7 @@ class GameBoard:
                     player.to_combat()
             self._show_enemies()
             player.display()
+            # menu.display()
             pygame.display.update()
         return quit_
 
