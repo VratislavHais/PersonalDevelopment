@@ -4,6 +4,7 @@ import Spell
 import pygame
 from abc import ABC
 from Coordinates import Coordinates
+from Menu import Menu
 import time
 import multiprocessing as mp
 
@@ -15,7 +16,7 @@ class Player(Character, ABC):
         self.hp_regen = hp_regen
         self.mp_regen = mp_regen
         self.run_regen()
-    
+
     def regen(self):
         while not self.is_dead.value and not self.game_ended.value:
             if not self.in_combat.value:
@@ -42,40 +43,28 @@ class Player(Character, ABC):
         self.health_regen(hp)
 
     def attack_or_spell(self, target: Character):
-        print("Types of attacks available:")
-        print("1) Attack with Weapon")
-        print("2) Cast a Spell")
-        decision = input("Pick your attack: ")
-        while not decision.isdigit() or (int(decision) != 1 and int(decision) != 2):
-            print("Invalid input!")
-            decision = input("Pick your attack: ")
-        if int(decision) == 1:
+        decision = Menu.get_input(("Attack with Weapon", "Cast a Spell"))
+        if decision == 0:
             self.weapon_attack(target)
         else:
             spell_to_cast = self.pick_spell()
-            while spell_to_cast != 0 and self.spells[spell_to_cast-1].mana_consumption > self.attributes.mp.value:
-                print("Insufficient mana!")
+            while spell_to_cast != len(self.spells) and \
+                    self.spells[spell_to_cast - 1].mana_consumption > self.attributes.mp.value:
+                Menu.show_message("Insufficient Mana!")
                 spell_to_cast = self.pick_spell()
-            if spell_to_cast == 0:
+            if spell_to_cast == len(self.spells):
                 self.attack_or_spell(target)
             else:
-                self.cast_spell(spell_to_cast - 1, target)
+                self.cast_spell(spell_to_cast, target)
 
     def add_xp(self, xp: int):
         self.attributes.gain_xp(xp)
         self.status_bar.update_xp(self.attributes.xp, self.attributes.xp_to_lvl)
 
     def pick_spell(self) -> int:
-        print("Mana available: " + str(self.attributes.mp.value))
-        print("Spells:")
-        print("0) Return to Attack Select")
-        for i, spell in enumerate(self.spells):
-            print(str(i + 1) + ") " + str(spell))
-        picked = input("Pick your spell: ")
-        while not picked.isdigit() or (int(picked) > len(self.spells) or int(picked) < 0):
-            print("Invalid input!")
-            picked = input("Pick your spell: ")
-        return int(picked)
+        spells_str = [spell.__class__.__name__ for spell in self.spells]
+        spells_str.append("Back")
+        return Menu.get_input(spells_str)
 
     def move(self, x: int, y: int):
         updates = ((x, 0), (0, y))
@@ -87,14 +76,14 @@ class Player(Character, ABC):
 
 class Warrior(Player):
     image = pygame.image.load("images/warrior.png")
-    
+
     def __init__(self, coordinates: Coordinates):
         super().__init__(200, 0, 3, 0, 25, 6, 10, Weapon.RustySword, coordinates)
 
 
 class Mage(Player):
     image = pygame.image.load("images/wizard.png")
-    
+
     def __init__(self, coordinates: Coordinates):
         super().__init__(100, 50, 1, 1, 6, 25, 10, Weapon.Fist, coordinates,
                          [Spell.Fireball(), Spell.MagicMissile(), Spell.Heal()])

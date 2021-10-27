@@ -3,6 +3,7 @@ from Coordinates import Coordinates
 import Enemy
 from Player import Player
 from Screen import Screen
+from Quit import Quit
 from Menu import Menu
 import pygame
 
@@ -47,12 +48,9 @@ class GameBoard:
         elif enemy_type == "ogre":
             return Enemy.OgreFactory()
 
-    def play(self, player: Player) -> bool:
-        quit_ = False
+    def play(self, player: Player):
         enemy = None
-        # menu = Menu()
-        # menu.set_items(("item1", "item2", "item3", "item4"))
-        while not player.is_dead.value and not quit_ and len(self.enemies) > 0:
+        while not player.is_dead.value and not Quit.quit_ and len(self.enemies) > 0:
             if len(self.enemies) < 1:
                 break
             if player.in_combat.value:
@@ -64,16 +62,15 @@ class GameBoard:
                 Screen.get_screen().fill((78, 138, 58))
                 for event in pygame.event.get():
                     if event.type == pygame.QUIT:
-                        quit_ = True
+                        Quit.quit_ = True
                 self._change_player_coords(player, pygame.key.get_pressed())
                 if player.coordinates.is_in_list(self.enemies):
                     enemy = player.coordinates.retrieve_from_list(self.enemies)
                     player.to_combat()
             self._show_enemies()
             player.display()
-            # menu.display()
+            Menu.display()
             pygame.display.update()
-        return quit_
 
     def _change_player_coords(self, player: Player, key_pressed_list):
         x = y = 0
